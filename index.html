@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Día de la Constitución · Índice de trabajos</title>
+
+  <!-- FAVICON con emoji de bandera de España (SVG inline) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇪🇸</text></svg>">
+
   <style>
     * {
       margin: 0;
@@ -70,6 +74,106 @@
       text-shadow: 0 1px 3px rgba(0,0,0,0.3);
     }
 
+    /* MENÚ DE PRESENTACIONES */
+    .menu-presentaciones {
+      background: #fff;
+      border-radius: 0.85rem;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      border-left: 5px solid #ffc400;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .menu-presentaciones label {
+      font-weight: 700;
+      color: #c60b1e;
+      font-size: 0.95rem;
+    }
+
+    .menu-presentaciones select {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.55rem 1rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      border: 2px solid #e5e7eb;
+      border-radius: 9999px;
+      background: #f9fafb;
+      color: #1f2937;
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .menu-presentaciones select:focus {
+      outline: none;
+      border-color: #c60b1e;
+      box-shadow: 0 0 0 3px rgba(198, 11, 30, 0.15);
+    }
+
+    /* VISOR DE PRESENTACIONES (iframe) */
+    .visor {
+      background: #fff;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+      border: 2px solid #ffc400;
+      margin-bottom: 2rem;
+    }
+
+    .visor-header {
+      background: linear-gradient(135deg, #c60b1e 0%, #a00817 100%);
+      color: #fff;
+      padding: 0.7rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .visor-header a {
+      color: #ffc400;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: rgba(255,255,255,0.12);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      transition: background 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .visor-header a:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    .visor iframe {
+      display: block;
+      width: 100%;
+      height: 650px;
+      border: none;
+      background: #f8f9fa;
+    }
+
+    .visor .placeholder {
+      padding: 3rem 2rem;
+      text-align: center;
+      color: #6c757d;
+      font-size: 1rem;
+    }
+
+    .visor .placeholder strong {
+      display: block;
+      font-size: 1.2rem;
+      color: #c60b1e;
+      margin-bottom: 0.5rem;
+    }
+
     /* CONTENEDOR PRINCIPAL */
     main {
       max-width: 1000px;
@@ -118,6 +222,7 @@
       position: relative;
       overflow: hidden;
       display: block;
+      cursor: pointer;
     }
 
     .card::before {
@@ -218,6 +323,8 @@
       .avatar { width: 58px; height: 58px; font-size: 1.7rem; }
       .card { padding: 1.1rem 0.8rem; }
       .card h2 { font-size: 1rem; }
+      .visor iframe { height: 500px; }
+      .menu-presentaciones { flex-direction: column; align-items: stretch; }
     }
 
     @media (max-width: 400px) {
@@ -235,13 +342,42 @@
 
   <main>
     <div class="intro">
-      <p>Bienvenido/a al índice de trabajos sobre la <strong>Constitución Española</strong>. Haz clic en la tarjeta de cada alumno para consultar su trabajo.</p>
+      <p>Bienvenido/a al índice de trabajos sobre la <strong>Constitución Española</strong>. Selecciona un alumno en el menú o haz clic en su tarjeta para ver su presentación incrustada aquí mismo.</p>
+    </div>
+
+    <!-- MENÚ DE PRESENTACIONES -->
+    <div class="menu-presentaciones">
+      <label for="selector-alumno">📚 Ir a la presentación de:</label>
+      <select id="selector-alumno">
+        <option value="">— Selecciona un alumno —</option>
+        <option value="alumno1.html">Alumno 1 😀</option>
+        <option value="alumno2.html">Alumno 2 😎</option>
+        <option value="alumno5.html">Alumno 5 😊</option>
+        <option value="alumno7.html">Alumno 7 🤓</option>
+        <option value="alumno8.html">Alumno 8 🧐</option>
+        <option value="alumno9.html">Alumno 9 😄</option>
+        <option value="alumno10.html">Alumno 10 🤩</option>
+      </select>
+    </div>
+
+    <!-- VISOR DE LA PRESENTACIÓN (iframe) -->
+    <div class="visor">
+      <div class="visor-header">
+        <span id="visor-titulo">Presentación del alumno</span>
+        <a id="visor-enlace" href="#" target="_blank" rel="noopener">Abrir en pestaña nueva ↗</a>
+      </div>
+      <div id="visor-contenido">
+        <div class="placeholder">
+          <strong>Ninguna presentación seleccionada</strong>
+          Elige un alumno en el menú de arriba o haz clic en una de las tarjetas para ver su trabajo aquí.
+        </div>
+      </div>
     </div>
 
     <div class="grid">
 
       <!-- ALUMNO 1 -->
-      <a class="card" href="alumno1.html">
+      <a class="card" href="alumno1.html" data-alumno="Alumno 1">
         <div class="avatar">😀</div>
         <h2>Alumno 1</h2>
         <p>Trabajo sobre la Constitución</p>
@@ -249,7 +385,7 @@
       </a>
 
       <!-- ALUMNO 2 -->
-      <a class="card" href="alumno2.html">
+      <a class="card" href="alumno2.html" data-alumno="Alumno 2">
         <div class="avatar">😎</div>
         <h2>Alumno 2</h2>
         <p>Trabajo sobre la Constitución</p>
@@ -257,7 +393,7 @@
       </a>
 
       <!-- ALUMNO 7 -->
-      <a class="card" href="alumno7.html">
+      <a class="card" href="alumno7.html" data-alumno="Alumno 7">
         <div class="avatar">🤓</div>
         <h2>Alumno 7</h2>
         <p>Trabajo sobre la Constitución</p>
@@ -265,7 +401,7 @@
       </a>
 
       <!-- ALUMNO 5 -->
-      <a class="card" href="alumno5.html">
+      <a class="card" href="alumno5.html" data-alumno="Alumno 5">
         <div class="avatar">😊</div>
         <h2>Alumno 5</h2>
         <p>Trabajo sobre la Constitución</p>
@@ -273,7 +409,7 @@
       </a>
 
       <!-- ALUMNO 8 -->
-      <a class="card" href="alumno8.html">
+      <a class="card" href="alumno8.html" data-alumno="Alumno 8">
         <div class="avatar">🧐</div>
         <h2>Alumno 8</h2>
         <p>Trabajo sobre la Constitución</p>
@@ -281,7 +417,7 @@
       </a>
 
       <!-- ALUMNO 9 -->
-      <a class="card" href="alumno9.html">
+      <a class="card" href="alumno9.html" data-alumno="Alumno 9">
         <div class="avatar">😄</div>
         <h2>Alumno 9</h2>
         <p>Trabajo sobre la Constitución</p>
@@ -289,7 +425,7 @@
       </a>
 
       <!-- ALUMNO 10 -->
-      <a class="card" href="alumno10.html">
+      <a class="card" href="alumno10.html" data-alumno="Alumno 10">
         <div class="avatar">🤩</div>
         <h2>Alumno 10</h2>
         <p>Trabajo sobre la Constitución</p>
@@ -303,6 +439,67 @@
     <span class="banderita" aria-hidden="true">🇪🇸</span>
     Índice de trabajos · Día de la Constitución Española · 6 de diciembre
   </footer>
+
+  <script>
+    (function () {
+      const selector = document.getElementById('selector-alumno');
+      const visorContenido = document.getElementById('visor-contenido');
+      const visorTitulo = document.getElementById('visor-titulo');
+      const visorEnlace = document.getElementById('visor-enlace');
+      const tarjetas = document.querySelectorAll('.card');
+
+      // Carga una presentación en el iframe
+      function cargarPresentacion(archivo, nombre) {
+        if (!archivo) {
+          visorContenido.innerHTML = `
+            <div class="placeholder">
+              <strong>Ninguna presentación seleccionada</strong>
+              Elige un alumno en el menú de arriba o haz clic en una de las tarjetas para ver su trabajo aquí.
+            </div>`;
+          visorTitulo.textContent = 'Presentación del alumno';
+          visorEnlace.href = '#';
+          visorEnlace.style.display = 'none';
+          return;
+        }
+
+        visorTitulo.textContent = 'Presentación · ' + (nombre || archivo);
+        visorEnlace.href = archivo;
+        visorEnlace.style.display = 'inline-block';
+
+        // Crear iframe
+        visorContenido.innerHTML = '';
+        const iframe = document.createElement('iframe');
+        iframe.src = archivo;
+        iframe.title = 'Presentación de ' + (nombre || archivo);
+        iframe.loading = 'lazy';
+        visorContenido.appendChild(iframe);
+
+        // Sincronizar el selector
+        selector.value = archivo;
+
+        // Desplazar suavemente al visor
+        document.querySelector('.visor').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // Evento del menú desplegable
+      selector.addEventListener('change', function () {
+        const archivo = this.value;
+        const opcion = this.options[this.selectedIndex];
+        const nombre = opcion.textContent.replace(/[^\w\sáéíóúÁÉÍÓÚñÑ]/g, '').trim();
+        cargarPresentacion(archivo, nombre);
+      });
+
+      // Evento de las tarjetas (evita la navegación normal y usa el iframe)
+      tarjetas.forEach(function (tarjeta) {
+        tarjeta.addEventListener('click', function (e) {
+          e.preventDefault();
+          const archivo = this.getAttribute('href');
+          const nombre = this.getAttribute('data-alumno') || archivo;
+          cargarPresentacion(archivo, nombre);
+        });
+      });
+    })();
+  </script>
 
 </body>
 </html>
