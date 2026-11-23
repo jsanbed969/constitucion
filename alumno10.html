@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Día de la Constitución Española - Alumno 10</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Georgia', 'Times New Roman', serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background: #fdf8f0;
+            border-radius: 28px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7), 0 0 0 4px #aa151b, 0 0 0 8px #f1bf00;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slides-viewport {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease-in-out, visibility 0.8s;
+            background: #fdf8f0;
+            background-image: radial-gradient(circle at 10% 20%, rgba(241, 191, 0, 0.08) 0%, transparent 30%),
+                              radial-gradient(circle at 90% 80%, rgba(170, 21, 27, 0.06) 0%, transparent 40%);
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        .slide::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #aa151b 0%, #aa151b 40%, transparent 40%);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .slide::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(315deg, #f1bf00 0%, #f1bf00 30%, transparent 30%);
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            color: #aa151b;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            text-shadow: 2px 2px 0 rgba(241, 191, 0, 0.3);
+            margin-bottom: 15px;
+            border-left: 12px solid #f1bf00;
+            padding-left: 25px;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: #16213e;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 4px solid #f1bf00;
+            display: inline-block;
+            padding-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        h2 span {
+            color: #aa151b;
+        }
+
+        p, li {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: #2d2d2d;
+            margin-bottom: 12px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 5px;
+        }
+
+        li {
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 18px;
+        }
+
+        li::before {
+            content: "▹";
+            color: #aa151b;
+            font-size: 1.8rem;
+            position: absolute;
+            left: 0;
+            top: -5px;
+            font-weight: bold;
+        }
+
+        .highlight-red {
+            color: #aa151b;
+            font-weight: 700;
+        }
+
+        .highlight-yellow {
+            background: #f1bf00;
+            color: #1a1a2e;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .cover {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            text-align: left;
+        }
+
+        .cover-text {
+            flex: 1.2;
+        }
+
+        .cover-image {
+            flex: 0.8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cover-image svg {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(15px 15px 0 #aa151b) drop-shadow(-8px -8px 0 #f1bf00);
+            transition: transform 0.3s;
+        }
+
+        .cover-image svg:hover {
+            transform: scale(1.02);
+        }
+
+        .student-info {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 20px 25px;
+            border-radius: 20px;
+            border: 2px dashed #aa151b;
+        }
+
+        .student-info p {
+            margin-bottom: 6px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .student-info strong {
+            color: #aa151b;
+            min-width: 90px;
+            font-weight: 700;
+        }
+
+        .course-badge {
+            background: #16213e;
+            color: #f1bf00;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .two-columns {
+            display: flex;
+            gap: 40px;
+            margin-top: 10px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        .stat-box {
+            background: #fff;
+            border-left: 8px solid #aa151b;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #aa151b;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .content-with-image {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            margin-top: 15px;
+        }
+
+        .content-with-image .text-block {
+            flex: 1.4;
+        }
+
+        .content-with-image .image-block {
+            flex: 0.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-with-image .image-block svg {
+            width: 100%;
+            max-width: 240px;
+            height: auto;
+            border-radius: 12px;
+            filter: drop-shadow(8px 8px 0 rgba(170, 21, 27, 0.25)) drop-shadow(-4px -4px 0 rgba(241, 191, 0, 0.4));
+            background: #fff;
+        }
+
+        .image-caption {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 8px;
+            background: #f1bf00;
+            width: 0%;
+            z-index: 100;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px #f1bf00;
+        }
+
+        .slide-counter {
+            position: absolute;
+            bottom: 25px;
+            right: 35px;
+            background: rgba(26, 26, 46, 0.8);
+            color: #f1bf00;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            z-index: 200;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(241, 191, 0, 0.5);
+        }
+
+        /* Contenedor de controles superiores: Anterior + Pausa + Siguiente */
+        .top-controls {
+            position: absolute;
+            top: 18px;
+            right: 25px;
+            display: flex;
+            gap: 8px;
+            z-index: 200;
+        }
+
+        .top-controls button {
+            background: rgba(26, 26, 46, 0.75);
+            color: #f1bf00;
+            border: 1.5px solid rgba(241, 191, 0, 0.6);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s, transform 0.1s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .top-controls button:hover {
+            background: #aa151b;
+            color: #fff;
+            border-color: #fff;
+        }
+
+        .top-controls button:active {
+            transform: scale(0.96);
+        }
+
+        .top-controls .pause-btn.paused {
+            background: #f1bf00;
+            color: #1a1a2e;
+            border-color: #aa151b;
+        }
+
+        .top-controls .icon {
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+
+        @media (max-width: 800px) {
+            .slide { padding: 25px 25px; }
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.6rem; }
+            p, li { font-size: 1rem; }
+            .cover { flex-direction: column; text-align: center; }
+            .cover-image svg { max-width: 70%; }
+            .student-info p { font-size: 1rem; flex-direction: column; align-items: flex-start; gap: 2px; }
+            .two-columns { flex-direction: column; gap: 15px; }
+            .content-with-image { flex-direction: column; align-items: center; }
+            .content-with-image .image-block svg { max-width: 160px; }
+            .slide-counter { bottom: 15px; right: 20px; padding: 5px 12px; font-size: 0.8rem; }
+            .top-controls { top: 10px; right: 10px; gap: 4px; }
+            .top-controls button { padding: 4px 8px; font-size: 0.7rem; }
+            .top-controls button span:not(.icon) { display: none; } /* Solo iconos en móvil */
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-container">
+    <div class="slides-viewport">
+        
+        <!-- DIAPOSITIVA 1: PORTADA -->
+        <div class="slide active cover" id="slide1">
+            <div class="cover-text">
+                <h1>Día de la<br>Constitución<br>Española</h1>
+                <p style="font-size: 1.5rem; color: #16213e; font-weight: 500; margin-bottom: 20px;">6 de diciembre · 1978</p>
+                <div class="student-info">
+                    <p><strong>Nombre:</strong>Alumno 10</p>
+                    <p><strong>Curso:</strong> <span class="course-badge">2º SMR</span></p>
+                    <p><strong>Centro:</strong> IES Vega del Guadalete</p>
+                </div>
+            </div>
+            <div class="cover-image">
+                <svg viewBox="0 0 300 320" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="150" cy="295" rx="110" ry="12" fill="rgba(0,0,0,0.15)"/>
+                    <rect x="60" y="70" width="30" height="190" rx="4" fill="#8B0000" stroke="#5a0000" stroke-width="2"/>
+                    <rect x="85" y="65" width="150" height="200" rx="6" fill="#aa151b" stroke="#7a0e13" stroke-width="3"/>
+                    <rect x="90" y="75" width="140" height="14" fill="#f1bf00"/>
+                    <rect x="90" y="241" width="140" height="14" fill="#f1bf00"/>
+                    <text x="160" y="130" font-family="Georgia, serif" font-size="18" font-weight="bold" fill="#fdf8f0" text-anchor="middle">CONSTITUCIÓN</text>
+                    <text x="160" y="155" font-family="Georgia, serif" font-size="15" fill="#fdf8f0" text-anchor="middle">ESPAÑOLA</text>
+                    <g transform="translate(160, 200)">
+                        <circle cx="0" cy="0" r="22" fill="#f1bf00" stroke="#8B0000" stroke-width="2"/>
+                        <path d="M-12,-6 L12,-6 L14,2 L0,12 L-14,2 Z" fill="#aa151b"/>
+                        <rect x="-3" y="-14" width="6" height="8" fill="#aa151b"/>
+                        <circle cx="0" cy="0" r="4" fill="#fdf8f0"/>
+                    </g>
+                    <text x="160" y="235" font-family="Georgia, serif" font-size="13" fill="#f1bf00" text-anchor="middle" font-weight="bold">1978</text>
+                    <rect x="85" y="265" width="150" height="6" rx="2" fill="#f5e6c8" stroke="#ddd" stroke-width="1"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- DIAPOSITIVA 2 -->
+        <div class="slide" id="slide2">
+            <h2>¿Qué es la <span>Constitución</span>?</h2>
+            <p>La Constitución Española de 1978 es la <strong class="highlight-red">norma fundamental</strong> del ordenamiento jurídico español. En ella se establecen los derechos y libertades de los ciudadanos, la organización del Estado y los principios que rigen la convivencia.</p>
+            <ul style="margin-top: 20px;">
+                <li>Es la ley suprema: ninguna otra norma puede contradecirla.</li>
+                <li>Define España como un <strong>Estado social y democrático de Derecho</strong>.</li>
+                <li>Consagra valores superiores como la <span class="highlight-yellow">libertad, justicia, igualdad y pluralismo político</span>.</li>
+                <li>Fue ratificada en referéndum por el pueblo español el 6 de diciembre de 1978.</li>
+            </ul>
+        </div>
+
+        <!-- DIAPOSITIVA 3 -->
+        <div class="slide" id="slide3">
+            <h2>Así se <span>elaboró</span></h2>
+            <div class="content-with-image">
+                <div class="text-block">
+                    <ul>
+                        <li><strong>15 de junio de 1977:</strong> Primeras elecciones democráticas tras la dictadura. Se eligen las Cortes Constituyentes.</li>
+                        <li><strong>Ponencia Constitucional:</strong> Siete diputados (los "padres de la Constitución") redactan el anteproyecto.</li>
+                        <li><strong>Debate y aprobación:</strong> El texto se discute y enmienda en el Congreso y el Senado.</li>
+                        <li><strong>31 de octubre de 1978:</strong> Las Cortes aprueban el texto definitivo por amplia mayoría.</li>
+                    </ul>
+                </div>
+                <div class="image-block">
+                    <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="10" y="10" width="180" height="240" rx="4" fill="#fefcf5" stroke="#c9b896" stroke-width="2"/>
+                        <rect x="10" y="10" width="180" height="45" fill="#aa151b" rx="4"/>
+                        <text x="100" y="30" font-family="Georgia, serif" font-size="11" fill="#f1bf00" text-anchor="middle" font-weight="bold">CONSTITUCIÓN</text>
+                        <text x="100" y="46" font-family="Georgia, serif" font-size="11" fill="#f1bf00" text-anchor="middle" font-weight="bold">ESPAÑOLA</text>
+                        <g fill="#8a7a5e">
+                            <rect x="25" y="70" width="150" height="4" rx="1"/>
+                            <rect x="25" y="82" width="150" height="4" rx="1"/>
+                            <rect x="25" y="94" width="130" height="4" rx="1"/>
+                            <rect x="25" y="110" width="150" height="4" rx="1"/>
+                            <rect x="25" y="122" width="140" height="4" rx="1"/>
+                            <rect x="25" y="134" width="150" height="4" rx="1"/>
+                            <rect x="25" y="146" width="100" height="4" rx="1"/>
+                        </g>
+                        <rect x="20" y="165" width="160" height="55" rx="3" fill="#fff8e0" stroke="#f1bf00" stroke-width="1.5"/>
+                        <text x="30" y="182" font-family="Georgia, serif" font-size="9" fill="#aa151b" font-weight="bold">Artículo 1</text>
+                        <g fill="#8a7a5e">
+                            <rect x="30" y="190" width="140" height="3" rx="1"/>
+                            <rect x="30" y="198" width="130" height="3" rx="1"/>
+                            <rect x="30" y="206" width="140" height="3" rx="1"/>
+                        </g>
+                        <circle cx="155" cy="235" r="14" fill="none" stroke="#aa151b" stroke-width="2" stroke-dasharray="3,2"/>
+                        <text x="155" y="239" font-family="Georgia, serif" font-size="7" fill="#aa151b" text-anchor="middle" font-weight="bold">1978</text>
+                    </svg>
+                    <div class="image-caption">Primera página del texto constitucional</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DIAPOSITIVA 4 -->
+        <div class="slide" id="slide4">
+            <h2>La Constitución en <span>cifras</span></h2>
+            <div class="two-columns">
+                <div class="col">
+                    <div class="stat-box">
+                        <div class="stat-number">169</div>
+                        <div class="stat-label">Artículos</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">11</div>
+                        <div class="stat-label">Títulos</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="stat-box">
+                        <div class="stat-number">1978</div>
+                        <div class="stat-label">Año de entrada en vigor (29 de diciembre)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Reformas parciales (1992, 2011, 2024)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DIAPOSITIVA 5 -->
+        <div class="slide" id="slide5">
+            <h2>Valores y <span>principios</span></h2>
+            <p style="margin-bottom: 25px;">El artículo 1.1 de la Constitución establece:</p>
+            <blockquote style="font-size: 1.4rem; font-style: italic; background: #fff; padding: 25px; border-radius: 20px; border-left: 8px solid #aa151b; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #16213e;">
+                "España se constituye en un Estado social y democrático de Derecho, que propugna como valores superiores de su ordenamiento jurídico la <span class="highlight-red">libertad</span>, la <span class="highlight-red">justicia</span>, la <span class="highlight-red">igualdad</span> y el <span class="highlight-red">pluralismo político</span>."
+            </blockquote>
+            <p style="margin-top: 25px; text-align: right;">— Constitución Española, Artículo 1.1</p>
+        </div>
+
+        <!-- DIAPOSITIVA 6 -->
+        <div class="slide" id="slide6">
+            <h2>Derechos y <span>deberes</span></h2>
+            <ul>
+                <li><strong>Igualdad ante la ley:</strong> Sin discriminación por nacimiento, raza, sexo, religión u opinión (Art. 14).</li>
+                <li><strong>Derecho a la vida</strong> y a la integridad física y moral (Art. 15).</li>
+                <li><strong>Libertad ideológica, religiosa y de culto</strong> (Art. 16).</li>
+                <li><strong>Derecho a la educación</strong> y a la libertad de enseñanza.</li>
+                <li><strong>Deber de defender España</strong> y contribuir al sostenimiento de los gastos públicos (Art. 30 y 31).</li>
+            </ul>
+            <p style="margin-top: 20px; background: #f1bf00; padding: 10px 20px; border-radius: 30px; display: inline-block; font-weight: 600; color: #1a1a2e;">El Título I es el más extenso: protege los derechos fundamentales.</p>
+        </div>
+
+        <!-- DIAPOSITIVA 7 -->
+        <div class="slide" id="slide7">
+            <h2>Organización del <span>Estado</span></h2>
+            <div class="two-columns">
+                <div class="col">
+                    <ul>
+                        <li><strong>Monarquía parlamentaria:</strong> El Rey es el Jefe del Estado.</li>
+                        <li><strong>Poder Legislativo:</strong> Cortes Generales (Congreso y Senado).</li>
+                        <li><strong>Poder Ejecutivo:</strong> Gobierno de la Nación.</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <ul>
+                        <li><strong>Poder Judicial:</strong> Jueces y Tribunales independientes.</li>
+                        <li><strong>Estado autonómico:</strong> Reconocimiento del derecho a la autonomía de nacionalidades y regiones.</li>
+                        <li><strong>Tribunal Constitucional:</strong> Garante supremo de la Constitución.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- DIAPOSITIVA 8 -->
+        <div class="slide" id="slide8">
+            <h2>El <span>6 de diciembre</span></h2>
+            <div class="content-with-image">
+                <div class="text-block">
+                    <p>El Día de la Constitución es una <strong class="highlight-red">fiesta nacional</strong> en España. Se conmemora el aniversario del referéndum de 1978, en el que el pueblo español ratificó la Carta Magna.</p>
+                    <ul style="margin-top: 15px;">
+                        <li>Representa la <strong>transición definitiva hacia la democracia</strong>.</li>
+                        <li>Es un día para reflexionar sobre los valores de convivencia, tolerancia y respeto.</li>
+                        <li>En los centros educativos (como el IES Vega del Guadalete) se realizan actos conmemorativos para acercar la Constitución a los estudiantes.</li>
+                    </ul>
+                    <div style="margin-top: 25px; text-align: center; font-size: 1.5rem; font-weight: 700; color: #aa151b; letter-spacing: 1px;">¡Feliz Día de la Constitución!</div>
+                </div>
+                <div class="image-block">
+                    <svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="240" height="140" fill="#e8f0fa"/>
+                        <rect x="0" y="140" width="240" height="60" fill="#d4c9a8"/>
+                        <rect x="40" y="50" width="160" height="90" fill="#f5eedc" stroke="#b8a88a" stroke-width="2"/>
+                        <polygon points="40,50 120,15 200,50" fill="#f5eedc" stroke="#b8a88a" stroke-width="2"/>
+                        <g stroke="#c9b896" stroke-width="6">
+                            <line x1="60" y1="60" x2="60" y2="140"/>
+                            <line x1="85" y1="60" x2="85" y2="140"/>
+                            <line x1="110" y1="60" x2="110" y2="140"/>
+                            <line x1="135" y1="60" x2="135" y2="140"/>
+                            <line x1="160" y1="60" x2="160" y2="140"/>
+                            <line x1="185" y1="60" x2="185" y2="140"/>
+                        </g>
+                        <rect x="105" y="105" width="30" height="35" fill="#8B0000" rx="2"/>
+                        <rect x="115" y="22" width="10" height="6" fill="#aa151b"/>
+                        <rect x="115" y="28" width="10" height="4" fill="#f1bf00"/>
+                        <rect x="115" y="32" width="10" height="6" fill="#aa151b"/>
+                        <circle cx="80" cy="48" r="4" fill="#aa151b"/>
+                        <circle cx="160" cy="48" r="4" fill="#aa151b"/>
+                        <text x="120" y="185" font-family="Georgia, serif" font-size="12" fill="#5a4a2e" text-anchor="middle" font-weight="bold">CONGRESO DE LOS DIPUTADOS</text>
+                    </svg>
+                    <div class="image-caption">Sede del Congreso de los Diputados</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Barra de progreso -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Contador de diapositivas -->
+    <div class="slide-counter" id="counter">1 / 8</div>
+
+    <!-- Controles superiores: Anterior + Pausa + Siguiente -->
+    <div class="top-controls">
+        <button class="prev-btn" id="prevBtn" title="Volver a la diapositiva anterior">
+            <span class="icon">◀</span>
+            <span>Anterior</span>
+        </button>
+        <button class="pause-btn" id="pauseBtn" title="Pausar/Reanudar cuenta atrás">
+            <span class="icon" id="pauseIcon">⏸</span>
+            <span id="pauseText">Pausar</span>
+        </button>
+        <button class="next-btn" id="nextBtn" title="Ir a la diapositiva siguiente">
+            <span>Siguiente</span>
+            <span class="icon">▶</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const counterElement = document.getElementById('counter');
+        const progressBar = document.getElementById('progressBar');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const pauseText = document.getElementById('pauseText');
+        
+        let currentIndex = 0;
+        const INTERVAL_MS = 10000;
+        let slideTimeout = null;
+        let progressInterval = null;
+        let startTime = null;
+        let elapsedBeforePause = 0;
+        let isPaused = false;
+
+        function showSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= totalSlides) index = totalSlides - 1;
+            slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+            currentIndex = index;
+            counterElement.textContent = `${currentIndex + 1} / ${totalSlides}`;
+        }
+
+        function nextSlide() {
+            const nextIndex = (currentIndex + 1) % totalSlides;
+            showSlide(nextIndex);
+            resetTimer();
+        }
+
+        function prevSlide() {
+            const prevIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            showSlide(prevIndex);
+            resetTimer();
+        }
+
+        function clearTimers() {
+            if (slideTimeout) { clearTimeout(slideTimeout); slideTimeout = null; }
+            if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+        }
+
+        function resetTimer() {
+            clearTimers();
+            elapsedBeforePause = 0;
+            progressBar.style.width = '0%';
+            if (isPaused) return;
+            startTime = Date.now();
+            runTimer();
+        }
+
+        function runTimer() {
+            clearTimers();
+            if (isPaused) return;
+            startTime = Date.now() - elapsedBeforePause;
+            progressInterval = setInterval(() => {
+                if (isPaused) return;
+                const elapsed = Date.now() - startTime;
+                const percentage = Math.min((elapsed / INTERVAL_MS) * 100, 100);
+                progressBar.style.width = percentage + '%';
+            }, 50);
+            const remaining = Math.max(0, INTERVAL_MS - elapsedBeforePause);
+            slideTimeout = setTimeout(() => {
+                if (!isPaused) nextSlide();
+            }, remaining);
+        }
+
+        function pause() {
+            if (isPaused) return;
+            isPaused = true;
+            if (startTime) elapsedBeforePause += Date.now() - startTime;
+            if (elapsedBeforePause > INTERVAL_MS) elapsedBeforePause = INTERVAL_MS;
+            clearTimers();
+            pauseBtn.classList.add('paused');
+            pauseIcon.textContent = '▶';
+            pauseText.textContent = 'Reanudar';
+            progressBar.style.width = progressBar.style.width || '0%';
+        }
+
+        function resume() {
+            if (!isPaused) return;
+            isPaused = false;
+            pauseBtn.classList.remove('paused');
+            pauseIcon.textContent = '⏸';
+            pauseText.textContent = 'Pausar';
+            if (elapsedBeforePause >= INTERVAL_MS) {
+                nextSlide();
+            } else {
+                runTimer();
+            }
+        }
+
+        pauseBtn.addEventListener('click', function() {
+            if (isPaused) resume(); else pause();
+        });
+
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        function init() {
+            showSlide(0);
+            resetTimer();
+        }
+
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) { if (!isPaused) pause(); }
+            else { if (isPaused) resume(); }
+        });
+
+        window.addEventListener('load', init);
+    })();
+</script>
+
+</body>
+</html>

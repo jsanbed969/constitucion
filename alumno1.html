@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Días de la Constitución - Alumno 01</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --rojo-es: #aa151b;
+            --rojo-oscuro: #7a0d12;
+            --oro-es: #f1bf00;
+            --oro-claro: #ffe066;
+            --fondo-oscuro: #121417;
+            --texto-principal: #1f2933;
+            --texto-secundario: #475569;
+            --superficie: #ffffff;
+            --superficie-suave: rgba(255, 255, 255, 0.88);
+            --borde: rgba(15, 23, 42, 0.12);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at top, #23272e 0%, var(--fondo-oscuro) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+            color: var(--texto-principal);
+        }
+
+        .slides-container {
+            position: relative;
+            width: 100%;
+            max-width: 1120px;
+            height: 82vh;
+            max-height: 700px;
+            min-height: 520px;
+            background: var(--superficie);
+            border-radius: 22px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Barra de progreso superior */
+        .progress-bar-wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(0, 0, 0, 0.08);
+            z-index: 30;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--rojo-es), var(--oro-es));
+            transition: width 0.1s linear;
+        }
+
+        /* Base de diapositivas */
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                        visibility 0.75s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 44px 52px 72px;
+            background: linear-gradient(145deg, #fffdf7 0%, #fff3d6 100%);
+            text-align: center;
+        }
+
+        /* Fondos de color variados por diapositiva */
+        .slide.bg-indice {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 55%, #fed7aa 100%);
+        }
+
+        .slide.bg-rojo-suave {
+            background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 55%, #fef3c7 100%);
+        }
+
+        .slide.bg-dorado-suave {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef08a 55%, #fde68a 100%);
+        }
+
+        .slide.bg-carmesi-suave {
+            background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 55%, #ffedd5 100%);
+        }
+
+        .slide.bg-ambar-suave {
+            background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 55%, #fef9c3 100%);
+        }
+
+        .slide.bg-coral-suave {
+            background: linear-gradient(135deg, #fff1f2 0%, #ffedd5 55%, #fef3c7 100%);
+        }
+
+        /* Variedades de transición */
+        .slide.trans-fade {
+            transform: scale(1);
+        }
+        .slide.trans-fade.active {
+            transform: scale(1);
+        }
+
+        .slide.trans-slide-right {
+            transform: translateX(70px);
+        }
+        .slide.trans-slide-right.active {
+            transform: translateX(0);
+        }
+
+        .slide.trans-slide-left {
+            transform: translateX(-70px);
+        }
+        .slide.trans-slide-left.active {
+            transform: translateX(0);
+        }
+
+        .slide.trans-slide-up {
+            transform: translateY(65px);
+        }
+        .slide.trans-slide-up.active {
+            transform: translateY(0);
+        }
+
+        .slide.trans-zoom {
+            transform: scale(0.88);
+        }
+        .slide.trans-zoom.active {
+            transform: scale(1);
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        /* Portada */
+        .slide.portada {
+            background: linear-gradient(135deg, #8f0f14 0%, var(--rojo-es) 48%, #c99700 100%);
+            color: #ffffff;
+            justify-content: space-between;
+            padding-top: 46px;
+            padding-bottom: 42px;
+        }
+
+        .portada::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(255, 224, 102, 0.25), transparent 50%);
+            pointer-events: none;
+        }
+
+        .portada-badge {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--oro-claro);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .portada h1 {
+            font-size: 2.85rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+            position: relative;
+            z-index: 1;
+        }
+
+        .portada-visual {
+            width: 148px;
+            height: 148px;
+            margin: 12px auto;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 20px;
+            padding: 12px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+            border: 3px solid var(--oro-claro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .portada .info {
+            background: rgba(15, 18, 22, 0.52);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-size: 1.12rem;
+            line-height: 1.65;
+            position: relative;
+            z-index: 1;
+        }
+
+        .portada .info strong {
+            color: var(--oro-claro);
+            font-size: 1.2rem;
+        }
+
+        /* Títulos de diapositiva */
+        .slide-header {
+            width: 100%;
+            max-width: 960px;
+            margin-bottom: 24px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid rgba(170, 21, 27, 0.22);
+            padding-bottom: 12px;
+        }
+
+        .slide h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--rojo-es);
+            position: relative;
+        }
+
+        .slide h2::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -14px;
+            width: 72px;
+            height: 4px;
+            border-radius: 4px;
+            background: var(--oro-es);
+        }
+
+        .slide-tag {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--texto-secundario);
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--borde);
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        /* Contenido principal */
+        .content-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 36px;
+            width: 100%;
+            max-width: 960px;
+            text-align: left;
+            flex: 1;
+        }
+
+        .text-content {
+            flex: 1.25;
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--texto-principal);
+        }
+
+        .text-content ul {
+            list-style: none;
+        }
+
+        .text-content li {
+            margin-bottom: 14px;
+            padding: 12px 16px 12px 42px;
+            background: var(--superficie-suave);
+            backdrop-filter: blur(4px);
+            border-radius: 10px;
+            border-left: 4px solid var(--rojo-es);
+            position: relative;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+        }
+
+        .text-content li::before {
+            content: "✓";
+            color: var(--rojo-es);
+            font-weight: 800;
+            font-size: 1rem;
+            position: absolute;
+            left: 15px;
+            top: 13px;
+        }
+
+        .text-content strong {
+            color: var(--rojo-oscuro);
+            font-weight: 700;
+        }
+
+        /* Tarjeta de ilustración SVG */
+        .image-content {
+            flex: 0 0 270px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid var(--borde);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 12px 26px rgba(15, 23, 42, 0.1);
+        }
+
+        .image-content svg {
+            width: 100%;
+            max-width: 210px;
+            height: auto;
+            display: block;
+        }
+
+        .image-caption {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--texto-secundario);
+            text-align: center;
+        }
+
+        /* Índice */
+        .indice-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px 18px;
+            width: 100%;
+            max-width: 900px;
+            text-align: left;
+            font-size: 1.1rem;
+        }
+
+        .indice-item {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 14px 18px;
+            border-left: 4px solid var(--rojo-es);
+            border-radius: 8px;
+            border-top: 1px solid var(--borde);
+            border-right: 1px solid var(--borde);
+            border-bottom: 1px solid var(--borde);
+            color: var(--texto-principal);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.05);
+        }
+
+        .indice-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--rojo-es);
+            color: #fff;
+            font-size: 0.88rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Conclusión */
+        .conclusion-card {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid var(--borde);
+            border-top: 5px solid var(--rojo-es);
+            border-radius: 18px;
+            padding: 36px 40px;
+            max-width: 780px;
+            box-shadow: 0 14px 32px rgba(15, 23, 42, 0.1);
+        }
+
+        /* Créditos */
+        .slide.creditos {
+            background: linear-gradient(135deg, #14171c 0%, #2b1418 55%, #3d2c08 100%);
+            color: #ffffff;
+        }
+
+        .creditos h2 {
+            color: var(--oro-es);
+        }
+
+        .creditos h2::after {
+            background: var(--rojo-es);
+        }
+
+        .creditos p {
+            font-size: 1.35rem;
+            margin: 14px 0;
+            color: #e4e7eb;
+        }
+
+        .creditos .logo-deepseek {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            color: var(--oro-es);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(241, 191, 0, 0.35);
+            padding: 12px 36px;
+            border-radius: 14px;
+            display: inline-block;
+            margin-top: 14px;
+        }
+
+        /* Controles inferiores */
+        .controls {
+            position: absolute;
+            bottom: 16px;
+            left: 24px;
+            right: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 25;
+            pointer-events: none;
+        }
+
+        .controls-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+        }
+
+        .btn-ctrl {
+            background: rgba(15, 23, 42, 0.82);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            padding: 7px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .btn-ctrl:hover {
+            background: var(--rojo-es);
+            transform: translateY(-1px);
+        }
+
+        .slide-counter {
+            pointer-events: auto;
+            background: rgba(15, 23, 42, 0.82);
+            color: #ffffff;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 820px) {
+            body {
+                padding: 10px;
+                overflow: auto;
+            }
+            .slides-container {
+                height: auto;
+                min-height: 88vh;
+                max-height: none;
+            }
+            .slide {
+                position: relative;
+                display: none;
+                transform: none !important;
+                padding: 28px 22px 76px;
+            }
+            .slide.active {
+                display: flex;
+            }
+            .slide-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .content-box {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .image-content {
+                flex: none;
+                width: 100%;
+                max-width: 240px;
+            }
+            .portada h1 {
+                font-size: 2rem;
+            }
+            .indice-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="slides-container" role="region" aria-label="Días de la Constitución">
+    <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Diapositiva 1: Portada -->
+    <div class="slide active portada trans-fade" data-transition="Desvanecer">
+        <div>
+            <span class="portada-badge">6 de diciembre · Festividad Nacional</span>
+            <h1>Días de la Constitución</h1>
+        </div>
+
+        <div class="portada-visual" aria-hidden="true">
+            <svg viewBox="0 0 120 120">
+                <rect x="20" y="22" width="80" height="82" rx="12" fill="#fff9e6" stroke="#aa151b" stroke-width="4"/>
+                <rect x="20" y="22" width="80" height="24" rx="10" fill="#aa151b"/>
+                <circle cx="42" cy="22" r="4" fill="#f1bf00"/>
+                <circle cx="78" cy="22" r="4" fill="#f1bf00"/>
+                <text x="60" y="74" text-anchor="middle" fill="#aa151b" font-size="26" font-weight="bold">6</text>
+                <text x="60" y="92" text-anchor="middle" fill="#334e68" font-size="11" font-weight="bold">DICIEMBRE</text>
+            </svg>
+        </div>
+
+        <div class="info">
+            <p><strong>Alumno 01</strong></p>
+            <p>Ciclo de Grado Medio de SMR</p>
+            <p>IES Vega del Guadalete</p>
+        </div>
+    </div>
+
+    <!-- Diapositiva 2: Índice -->
+    <div class="slide bg-indice trans-slide-right" data-transition="Deslizar derecha">
+        <div class="slide-header">
+            <h2>Índice</h2>
+            <span class="slide-tag">10 diapositivas</span>
+        </div>
+        <div class="indice-grid">
+            <div class="indice-item"><span class="indice-num">1</span> El 6 de diciembre de 1978</div>
+            <div class="indice-item"><span class="indice-num">4</span> Celebración y sentido cívico</div>
+            <div class="indice-item"><span class="indice-num">2</span> Consenso y referéndum</div>
+            <div class="indice-item"><span class="indice-num">5</span> Convivencia y futuro</div>
+            <div class="indice-item"><span class="indice-num">3</span> Sanción y entrada en vigor</div>
+            <div class="indice-item"><span class="indice-num">6</span> Conclusión y créditos</div>
+        </div>
+    </div>
+
+    <!-- Diapositiva 3 -->
+    <div class="slide bg-rojo-suave trans-zoom" data-transition="Zoom suave">
+        <div class="slide-header">
+            <h2>1. El 6 de diciembre de 1978</h2>
+            <span class="slide-tag">Fecha central</span>
+        </div>
+        <div class="content-box">
+            <div class="text-content">
+                <ul>
+                    <li>Es la jornada en la que la ciudadanía española <strong>aprobó en referéndum</strong> la Constitución.</li>
+                    <li>Se celebra cada año como <strong>festividad nacional</strong> en España.</li>
+                    <li>Recuerda el inicio de una etapa basada en los derechos y libertades democráticas.</li>
+                </ul>
+            </div>
+            <div class="image-content">
+                <svg viewBox="0 0 160 160" aria-hidden="true">
+                    <rect x="26" y="24" width="108" height="112" rx="14" fill="#ffffff" stroke="#aa151b" stroke-width="4"/>
+                    <rect x="26" y="24" width="108" height="32" rx="10" fill="#aa151b"/>
+                    <text x="80" y="45" text-anchor="middle" fill="#f1bf00" font-size="13" font-weight="bold">DIC · 1978</text>
+                    <text x="80" y="96" text-anchor="middle" fill="#1f2933" font-size="42" font-weight="bold">6</text>
+                    <rect x="48" y="108" width="64" height="8" rx="4" fill="#f1bf00"/>
+                </svg>
+                <span class="image-caption">Día de la Constitución</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diapositiva 4 -->
+    <div class="slide bg-dorado-suave trans-slide-left" data-transition="Deslizar izquierda">
+        <div class="slide-header">
+            <h2>2. Consenso y referéndum</h2>
+            <span class="slide-tag">Transición democrática</span>
+        </div>
+        <div class="content-box">
+            <div class="text-content">
+                <ul>
+                    <li>Nació del <strong>diálogo y el consenso</strong> político durante la Transición.</li>
+                    <li>Fue aprobada por las Cortes Generales el <strong>31 de octubre de 1978</strong>.</li>
+                    <li>El 6 de diciembre el pueblo decidió directamente en las urnas mediante <strong>referéndum</strong>.</li>
+                </ul>
+            </div>
+            <div class="image-content">
+                <svg viewBox="0 0 160 150" aria-hidden="true">
+                    <rect x="34" y="64" width="92" height="58" rx="8" fill="#334e68" stroke="#1f2933" stroke-width="3"/>
+                    <rect x="46" y="76" width="68" height="6" rx="3" fill="#f1bf00"/>
+                    <rect x="56" y="26" width="48" height="44" rx="4" fill="#ffffff" stroke="#aa151b" stroke-width="3"/>
+                    <path d="M68 48 L77 57 L94 38" fill="none" stroke="#aa151b" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="image-caption">Decisión en las urnas</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diapositiva 5 -->
+    <div class="slide bg-ambar-suave trans-slide-up" data-transition="Deslizar arriba">
+        <div class="slide-header">
+            <h2>3. Sanción y entrada en vigor</h2>
+            <span class="slide-tag">Otros días clave</span>
+        </div>
+        <div class="content-box">
+            <div class="text-content">
+                <ul>
+                    <li>Tras el referéndum, fue sancionada y promulgada el <strong>27 de diciembre de 1978</strong>.</li>
+                    <li>Entró en vigor el <strong>29 de diciembre de 1978</strong> al publicarse en el BOE.</li>
+                    <li>Diciembre concentra así las fechas esenciales que dieron vigencia al texto.</li>
+                </ul>
+            </div>
+            <div class="image-content">
+                <svg viewBox="0 0 160 150" aria-hidden="true">
+                    <rect x="30" y="24" width="100" height="104" rx="10" fill="#fffdf5" stroke="#aa151b" stroke-width="3.5"/>
+                    <text x="80" y="54" text-anchor="middle" fill="#aa151b" font-size="14" font-weight="bold">27 · 29 DIC</text>
+                    <line x1="46" y1="70" x2="114" y2="70" stroke="#334e68" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="46" y1="86" x2="104" y2="86" stroke="#7b8794" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="104" cy="106" r="10" fill="#f1bf00" stroke="#aa151b" stroke-width="2.5"/>
+                </svg>
+                <span class="image-caption">Promulgación y vigor</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diapositiva 6 -->
+    <div class="slide bg-carmesi-suave trans-fade" data-transition="Desvanecer">
+        <div class="slide-header">
+            <h2>4. Celebración y sentido cívico</h2>
+            <span class="slide-tag">Memoria anual</span>
+        </div>
+        <div class="content-box">
+            <div class="text-content">
+                <ul>
+                    <li>Cada año se conmemora con <strong>actos institucionales</strong> y actividades educativas.</li>
+                    <li>Sirve para recordar el valor de la <strong>igualdad, la libertad y la justicia</strong>.</li>
+                    <li>Acercar estas fechas a los centros educativos refuerza la cultura democrática.</li>
+                </ul>
+            </div>
+            <div class="image-content">
+                <svg viewBox="0 0 160 150" aria-hidden="true">
+                    <polygon points="80,32 24,62 80,92 136,62" fill="#aa151b" stroke="#7a0d12" stroke-width="3" stroke-linejoin="round"/>
+                    <path d="M48 78 V106 C48 116, 112 116, 112 106 V78" fill="none" stroke="#334e68" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="136" y1="62" x2="136" y2="98" stroke="#f1bf00" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+                <span class="image-caption">Educación y ciudadanía</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diapositiva 7 -->
+    <div class="slide bg-coral-suave trans-slide-right" data-transition="Deslizar derecha">
+        <div class="slide-header">
+            <h2>5. Convivencia y futuro</h2>
+            <span class="slide-tag">Compromiso común</span>
+        </div>
+        <div class="content-box">
+            <div class="text-content">
+                <ul>
+                    <li>Ofrece un <strong>marco común de convivencia</strong> pacífica y pluralismo.</li>
+                    <li>Une el respeto a la memoria histórica con los retos actuales de la sociedad.</li>
+                    <li>Recuerda que la democracia se sostiene en la participación y el respeto mutuo.</li>
+                </ul>
+            </div>
+            <div class="image-content">
+                <svg viewBox="0 0 160 150" aria-hidden="true">
+                    <circle cx="56" cy="62" r="13" fill="#aa151b"/>
+                    <circle cx="104" cy="62" r="13" fill="#c99700"/>
+                    <path d="M32 108 C32 88, 80 88, 80 108" fill="none" stroke="#aa151b" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M80 108 C80 88, 128 88, 128 108" fill="none" stroke="#c99700" stroke-width="6" stroke-linecap="round"/>
+                </svg>
+                <span class="image-caption">Convivencia democrática</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diapositiva 8 -->
+    <div class="slide bg-dorado-suave trans-zoom" data-transition="Zoom suave">
+        <div class="slide-header">
+            <h2>6. Conclusión</h2>
+            <span class="slide-tag">Síntesis</span>
+        </div>
+        <div class="content-box" style="justify-content: center;">
+            <div class="conclusion-card" style="text-align: center;">
+                <p style="font-size: 1.45rem; font-weight: 600; margin-bottom: 16px; color: var(--texto-principal);">
+                    Los <strong style="color: var(--rojo-es);">Días de la Constitución</strong> celebran el acuerdo de convivencia de 1978.
+                </p>
+                <p style="font-size: 1.2rem; color: var(--texto-secundario); line-height: 1.65;">
+                    Recordar el 6 de diciembre y las fechas de su aprobación y entrada en vigor es reafirmar los valores democráticos y el respeto entre ciudadanos.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diapositiva 9 -->
+    <div class="slide bg-rojo-suave trans-slide-left" data-transition="Deslizar izquierda">
+        <div class="slide-header">
+            <h2>Resumen de fechas clave</h2>
+            <span class="slide-tag">Cronología</span>
+        </div>
+        <div class="content-box">
+            <div class="text-content">
+                <ul>
+                    <li><strong>31 de octubre de 1978:</strong> aprobación por las Cortes Generales.</li>
+                    <li><strong>6 de diciembre de 1978:</strong> referéndum y festividad del Día de la Constitución.</li>
+                    <li><strong>27 y 29 de diciembre de 1978:</strong> sanción real, publicación y entrada en vigor.</li>
+                </ul>
+            </div>
+            <div class="image-content">
+                <svg viewBox="0 0 160 150" aria-hidden="true">
+                    <line x1="40" y1="34" x2="40" y2="116" stroke="#334e68" stroke-width="4" stroke-linecap="round"/>
+                    <circle cx="40" cy="42" r="8" fill="#aa151b"/>
+                    <circle cx="40" cy="75" r="8" fill="#f1bf00" stroke="#aa151b" stroke-width="2"/>
+                    <circle cx="40" cy="108" r="8" fill="#aa151b"/>
+                    <rect x="60" y="34" width="70" height="16" rx="4" fill="#f8f9fb" stroke="#cbd2d9"/>
+                    <rect x="60" y="67" width="78" height="16" rx="4" fill="#fff9e6" stroke="#f1bf00"/>
+                    <rect x="60" y="100" width="70" height="16" rx="4" fill="#f8f9fb" stroke="#cbd2d9"/>
+                </svg>
+                <span class="image-caption">Hitos de 1978</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diapositiva 10: Créditos -->
+    <div class="slide creditos trans-fade" data-transition="Desvanecer">
+        <h2>Créditos</h2>
+        <p>Esta presentación ha sido realizada con</p>
+        <div class="logo-deepseek">DeepSeek</div>
+        <p style="font-size: 1rem; margin-top: 28px; color: #cbd5e1;">
+            Alumno 01 · SMR · IES Vega del Guadalete
+        </p>
+    </div>
+
+    <!-- Controles inferiores -->
+    <div class="controls">
+        <div class="controls-group">
+            <button type="button" class="btn-ctrl" id="prevBtn" aria-label="Diapositiva anterior">← Anterior</button>
+            <button type="button" class="btn-ctrl" id="togglePlayBtn" aria-label="Pausar o reanudar">Pausar</button>
+            <button type="button" class="btn-ctrl" id="nextBtn" aria-label="Siguiente diapositiva">Siguiente →</button>
+        </div>
+        <div class="slide-counter" id="slideCounter">1 / 10</div>
+    </div>
+</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progressBar');
+    const slideCounter = document.getElementById('slideCounter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const togglePlayBtn = document.getElementById('togglePlayBtn');
+
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+    const intervalTime = 10000;
+    const tickTime = 100;
+    let elapsed = 0;
+    let isPlaying = true;
+
+    function updateUI() {
+        slides.forEach((slide, idx) => {
+            slide.classList.toggle('active', idx === currentSlide);
+        });
+        const activeTransition = slides[currentSlide].dataset.transition || '';
+        slideCounter.textContent = `${currentSlide + 1} / ${totalSlides} · ${activeTransition}`;
+        const pct = Math.min(100, (elapsed / intervalTime) * 100);
+        progressBar.style.width = `${pct}%`;
+    }
+
+    function goToSlide(index) {
+        currentSlide = (index + totalSlides) % totalSlides;
+        elapsed = 0;
+        updateUI();
+    }
+
+    function nextSlide() {
+        goToSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+        goToSlide(currentSlide - 1);
+    }
+
+    setInterval(() => {
+        if (!isPlaying) return;
+        elapsed += tickTime;
+        if (elapsed >= intervalTime) {
+            nextSlide();
+        } else {
+            progressBar.style.width = `${(elapsed / intervalTime) * 100}%`;
+        }
+    }, tickTime);
+
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    togglePlayBtn.addEventListener('click', () => {
+        isPlaying = !isPlaying;
+        togglePlayBtn.textContent = isPlaying ? 'Pausar' : 'Reanudar';
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+        if (e.key === ' ') {
+            e.preventDefault();
+            togglePlayBtn.click();
+        }
+    });
+
+    updateUI();
+</script>
+
+</body>
+</html>
