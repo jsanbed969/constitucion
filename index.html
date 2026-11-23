@@ -26,7 +26,7 @@
     /* CABECERA */
     header {
       background: linear-gradient(135deg, #c60b1e 0%, #a00817 50%, #ffc400 100%);
-      padding: 3rem 1.5rem 2.5rem;
+      padding: 2rem 1.5rem 1.8rem;
       text-align: center;
       color: #fff;
       position: relative;
@@ -39,16 +39,16 @@
       bottom: -1px;
       left: 0;
       right: 0;
-      height: 60px;
+      height: 40px;
       background: linear-gradient(135deg, #f8f9fa 0%, #fff3e0 100%);
       clip-path: polygon(0 100%, 100% 100%, 100% 0, 50% 100%, 0 0);
     }
 
     .bandera {
-      font-size: 4.5rem;
+      font-size: 2.8rem;
       line-height: 1;
-      margin-bottom: 1rem;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
+      margin-bottom: 0.4rem;
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25));
       display: inline-block;
       animation: ondear 3s ease-in-out infinite;
     }
@@ -60,58 +60,95 @@
     }
 
     header h1 {
-      font-size: 2.2rem;
+      font-size: 1.7rem;
       font-weight: 800;
       letter-spacing: -0.5px;
       text-shadow: 0 2px 6px rgba(0,0,0,0.3);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.2rem;
     }
 
     header p {
-      font-size: 1.05rem;
+      font-size: 0.9rem;
       opacity: 0.95;
       font-weight: 500;
       text-shadow: 0 1px 3px rgba(0,0,0,0.3);
     }
 
-    /* MENÚ DE PRESENTACIONES */
-    .menu-presentaciones {
+    /* CONTENEDOR PRINCIPAL */
+    main {
+      max-width: 1100px;
+      margin: -1rem auto 2rem;
+      padding: 0 1rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* BARRA DE ICONOS (arriba, pequeños) */
+    .barra-alumnos {
       background: #fff;
       border-radius: 0.85rem;
-      padding: 1rem 1.5rem;
-      margin-bottom: 1.5rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
       box-shadow: 0 4px 16px rgba(0,0,0,0.08);
       border-left: 5px solid #ffc400;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 0.75rem;
+      justify-content: center;
+      gap: 0.6rem;
     }
 
-    .menu-presentaciones label {
+    .barra-alumnos .etiqueta {
       font-weight: 700;
       color: #c60b1e;
-      font-size: 0.95rem;
+      font-size: 0.8rem;
+      margin-right: 0.3rem;
+      white-space: nowrap;
     }
 
-    .menu-presentaciones select {
-      flex: 1;
-      min-width: 200px;
-      padding: 0.55rem 1rem;
-      font-size: 0.95rem;
-      font-family: inherit;
-      border: 2px solid #e5e7eb;
-      border-radius: 9999px;
+    .icono-alumno {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.15rem;
       background: #f9fafb;
-      color: #1f2937;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.7rem;
+      padding: 0.35rem 0.5rem;
       cursor: pointer;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      min-width: 58px;
+      text-decoration: none;
+      color: #1f2937;
     }
 
-    .menu-presentaciones select:focus {
-      outline: none;
+    .icono-alumno:hover {
+      transform: translateY(-3px);
+      border-color: #ffc400;
+      box-shadow: 0 6px 14px rgba(198, 11, 30, 0.15);
+      background: #fff;
+    }
+
+    .icono-alumno.activo {
       border-color: #c60b1e;
+      background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
       box-shadow: 0 0 0 3px rgba(198, 11, 30, 0.15);
+    }
+
+    .icono-alumno .emoji {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .icono-alumno .nombre {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #4b5563;
+      white-space: nowrap;
+    }
+
+    .icono-alumno.activo .nombre {
+      color: #c60b1e;
     }
 
     /* VISOR DE PRESENTACIONES (iframe) */
@@ -121,14 +158,13 @@
       overflow: hidden;
       box-shadow: 0 6px 24px rgba(0,0,0,0.1);
       border: 2px solid #ffc400;
-      margin-bottom: 2rem;
     }
 
     .visor-header {
       background: linear-gradient(135deg, #c60b1e 0%, #a00817 100%);
       color: #fff;
-      padding: 0.7rem 1.25rem;
-      font-size: 0.9rem;
+      padding: 0.6rem 1.1rem;
+      font-size: 0.85rem;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -139,10 +175,10 @@
     .visor-header a {
       color: #ffc400;
       text-decoration: none;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 700;
       background: rgba(255,255,255,0.12);
-      padding: 0.25rem 0.75rem;
+      padding: 0.25rem 0.7rem;
       border-radius: 9999px;
       transition: background 0.2s ease;
       white-space: nowrap;
@@ -155,13 +191,14 @@
     .visor iframe {
       display: block;
       width: 100%;
-      height: 650px;
+      height: 78vh;
+      min-height: 500px;
       border: none;
       background: #f8f9fa;
     }
 
     .visor .placeholder {
-      padding: 3rem 2rem;
+      padding: 4rem 2rem;
       text-align: center;
       color: #6c757d;
       font-size: 1rem;
@@ -174,161 +211,31 @@
       margin-bottom: 0.5rem;
     }
 
-    /* CONTENEDOR PRINCIPAL */
-    main {
-      max-width: 1000px;
-      margin: -1.5rem auto 3rem;
-      padding: 0 1.5rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    .intro {
-      background: #fff;
-      border-radius: 1rem;
-      padding: 1.5rem 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      border-left: 5px solid #c60b1e;
-      text-align: center;
-    }
-
-    .intro p {
-      font-size: 1.05rem;
-      color: #4b5563;
-    }
-
-    .intro strong {
-      color: #c60b1e;
-    }
-
-    /* REJILLA DE TARJETAS */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 0.85rem;
-      padding: 1.5rem 1.25rem;
-      text-align: center;
-      text-decoration: none;
-      color: #1f2937;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.07);
-      border: 2px solid transparent;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-      position: relative;
-      overflow: hidden;
-      display: block;
-      cursor: pointer;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, #c60b1e 0%, #ffc400 100%);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 28px rgba(198, 11, 30, 0.18);
-      border-color: #ffc400;
-    }
-
-    .card:hover::before {
-      transform: scaleX(1);
-    }
-
-    .avatar {
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 1rem;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      line-height: 1;
-      box-shadow: 0 4px 12px rgba(198, 11, 30, 0.2);
-      border: 3px solid #ffc400;
-      transition: transform 0.2s ease;
-    }
-
-    .card:hover .avatar {
-      transform: scale(1.1) rotate(-6deg);
-      border-color: #c60b1e;
-    }
-
-    .card h2 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-      color: #1f2937;
-    }
-
-    .card p {
-      font-size: 0.85rem;
-      color: #6c757d;
-      margin-bottom: 1rem;
-    }
-
-    .btn {
-      display: inline-block;
-      background: linear-gradient(135deg, #c60b1e 0%, #a00817 100%);
-      color: #fff;
-      padding: 0.5rem 1.25rem;
-      border-radius: 9999px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-
-    .card:hover .btn {
-      background: linear-gradient(135deg, #ffc400 0%, #e0a800 100%);
-      color: #1f2937;
-    }
-
     /* FOOTER */
     footer {
       text-align: center;
-      padding: 2rem 1.5rem;
+      padding: 1.5rem 1.5rem;
       background: #1f2937;
       color: #d1d5db;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     footer .banderita {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       display: block;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
     }
 
     /* RESPONSIVE */
     @media (max-width: 600px) {
-      header h1 { font-size: 1.6rem; }
-      .bandera { font-size: 3.2rem; }
-      .intro { padding: 1.2rem 1rem; }
-      .grid { grid-template-columns: 1fr 1fr; gap: 0.9rem; }
-      .avatar { width: 58px; height: 58px; font-size: 1.7rem; }
-      .card { padding: 1.1rem 0.8rem; }
-      .card h2 { font-size: 1rem; }
-      .visor iframe { height: 500px; }
-      .menu-presentaciones { flex-direction: column; align-items: stretch; }
-    }
-
-    @media (max-width: 400px) {
-      .grid { grid-template-columns: 1fr; }
+      header h1 { font-size: 1.3rem; }
+      .bandera { font-size: 2.2rem; }
+      .barra-alumnos { gap: 0.4rem; padding: 0.6rem 0.5rem; }
+      .barra-alumnos .etiqueta { width: 100%; text-align: center; margin-bottom: 0.2rem; }
+      .icono-alumno { min-width: 50px; padding: 0.3rem 0.35rem; }
+      .icono-alumno .emoji { font-size: 1.25rem; }
+      .icono-alumno .nombre { font-size: 0.58rem; }
+      .visor iframe { height: 70vh; min-height: 400px; }
     }
   </style>
 </head>
@@ -341,98 +248,61 @@
   </header>
 
   <main>
-    <div class="intro">
-      <p>Bienvenido/a al índice de trabajos sobre la <strong>Constitución Española</strong>. Selecciona un alumno en el menú o haz clic en su tarjeta para ver su presentación incrustada aquí mismo.</p>
-    </div>
 
-    <!-- MENÚ DE PRESENTACIONES -->
-    <div class="menu-presentaciones">
-      <label for="selector-alumno">📚 Ir a la presentación de:</label>
-      <select id="selector-alumno">
-        <option value="">— Selecciona un alumno —</option>
-        <option value="alumno1.html">Alumno 1 😀</option>
-        <option value="alumno2.html">Alumno 2 😎</option>
-        <option value="alumno5.html">Alumno 5 😊</option>
-        <option value="alumno7.html">Alumno 7 🤓</option>
-        <option value="alumno8.html">Alumno 8 🧐</option>
-        <option value="alumno9.html">Alumno 9 😄</option>
-        <option value="alumno10.html">Alumno 10 🤩</option>
-      </select>
+    <!-- BARRA DE ICONOS (arriba, pequeños) -->
+    <div class="barra-alumnos">
+      <span class="etiqueta">📚 Presentaciones:</span>
+
+      <a class="icono-alumno" href="alumno1.html" data-alumno="Alumno 1">
+        <span class="emoji">😀</span>
+        <span class="nombre">Alumno 1</span>
+      </a>
+
+      <a class="icono-alumno" href="alumno2.html" data-alumno="Alumno 2">
+        <span class="emoji">😎</span>
+        <span class="nombre">Alumno 2</span>
+      </a>
+
+      <a class="icono-alumno" href="alumno5.html" data-alumno="Alumno 5">
+        <span class="emoji">😊</span>
+        <span class="nombre">Alumno 5</span>
+      </a>
+
+      <a class="icono-alumno" href="alumno7.html" data-alumno="Alumno 7">
+        <span class="emoji">🤓</span>
+        <span class="nombre">Alumno 7</span>
+      </a>
+
+      <a class="icono-alumno" href="alumno8.html" data-alumno="Alumno 8">
+        <span class="emoji">🧐</span>
+        <span class="nombre">Alumno 8</span>
+      </a>
+
+      <a class="icono-alumno" href="alumno9.html" data-alumno="Alumno 9">
+        <span class="emoji">😄</span>
+        <span class="nombre">Alumno 9</span>
+      </a>
+
+      <a class="icono-alumno" href="alumno10.html" data-alumno="Alumno 10">
+        <span class="emoji">🤩</span>
+        <span class="nombre">Alumno 10</span>
+      </a>
     </div>
 
     <!-- VISOR DE LA PRESENTACIÓN (iframe) -->
     <div class="visor">
       <div class="visor-header">
         <span id="visor-titulo">Presentación del alumno</span>
-        <a id="visor-enlace" href="#" target="_blank" rel="noopener">Abrir en pestaña nueva ↗</a>
+        <a id="visor-enlace" href="#" target="_blank" rel="noopener" style="display:none;">Abrir en pestaña nueva ↗</a>
       </div>
       <div id="visor-contenido">
         <div class="placeholder">
           <strong>Ninguna presentación seleccionada</strong>
-          Elige un alumno en el menú de arriba o haz clic en una de las tarjetas para ver su trabajo aquí.
+          Pulsa en uno de los iconos de arriba para ver el trabajo del alumno aquí.
         </div>
       </div>
     </div>
 
-    <div class="grid">
-
-      <!-- ALUMNO 1 -->
-      <a class="card" href="alumno1.html" data-alumno="Alumno 1">
-        <div class="avatar">😀</div>
-        <h2>Alumno 1</h2>
-        <p>Trabajo sobre la Constitución</p>
-        <span class="btn">Ver trabajo →</span>
-      </a>
-
-      <!-- ALUMNO 2 -->
-      <a class="card" href="alumno2.html" data-alumno="Alumno 2">
-        <div class="avatar">😎</div>
-        <h2>Alumno 2</h2>
-        <p>Trabajo sobre la Constitución</p>
-        <span class="btn">Ver trabajo →</span>
-      </a>
-
-      <!-- ALUMNO 7 -->
-      <a class="card" href="alumno7.html" data-alumno="Alumno 7">
-        <div class="avatar">🤓</div>
-        <h2>Alumno 7</h2>
-        <p>Trabajo sobre la Constitución</p>
-        <span class="btn">Ver trabajo →</span>
-      </a>
-
-      <!-- ALUMNO 5 -->
-      <a class="card" href="alumno5.html" data-alumno="Alumno 5">
-        <div class="avatar">😊</div>
-        <h2>Alumno 5</h2>
-        <p>Trabajo sobre la Constitución</p>
-        <span class="btn">Ver trabajo →</span>
-      </a>
-
-      <!-- ALUMNO 8 -->
-      <a class="card" href="alumno8.html" data-alumno="Alumno 8">
-        <div class="avatar">🧐</div>
-        <h2>Alumno 8</h2>
-        <p>Trabajo sobre la Constitución</p>
-        <span class="btn">Ver trabajo →</span>
-      </a>
-
-      <!-- ALUMNO 9 -->
-      <a class="card" href="alumno9.html" data-alumno="Alumno 9">
-        <div class="avatar">😄</div>
-        <h2>Alumno 9</h2>
-        <p>Trabajo sobre la Constitución</p>
-        <span class="btn">Ver trabajo →</span>
-      </a>
-
-      <!-- ALUMNO 10 -->
-      <a class="card" href="alumno10.html" data-alumno="Alumno 10">
-        <div class="avatar">🤩</div>
-        <h2>Alumno 10</h2>
-        <p>Trabajo sobre la Constitución</p>
-        <span class="btn">Ver trabajo →</span>
-      </a>
-
-    </div>
   </main>
 
   <footer>
@@ -442,25 +312,15 @@
 
   <script>
     (function () {
-      const selector = document.getElementById('selector-alumno');
       const visorContenido = document.getElementById('visor-contenido');
       const visorTitulo = document.getElementById('visor-titulo');
       const visorEnlace = document.getElementById('visor-enlace');
-      const tarjetas = document.querySelectorAll('.card');
+      const iconos = document.querySelectorAll('.icono-alumno');
 
-      // Carga una presentación en el iframe
-      function cargarPresentacion(archivo, nombre) {
-        if (!archivo) {
-          visorContenido.innerHTML = `
-            <div class="placeholder">
-              <strong>Ninguna presentación seleccionada</strong>
-              Elige un alumno en el menú de arriba o haz clic en una de las tarjetas para ver su trabajo aquí.
-            </div>`;
-          visorTitulo.textContent = 'Presentación del alumno';
-          visorEnlace.href = '#';
-          visorEnlace.style.display = 'none';
-          return;
-        }
+      function cargarPresentacion(archivo, nombre, iconoActivo) {
+        // Marcar icono activo
+        iconos.forEach(function (i) { i.classList.remove('activo'); });
+        if (iconoActivo) iconoActivo.classList.add('activo');
 
         visorTitulo.textContent = 'Presentación · ' + (nombre || archivo);
         visorEnlace.href = archivo;
@@ -473,29 +333,14 @@
         iframe.title = 'Presentación de ' + (nombre || archivo);
         iframe.loading = 'lazy';
         visorContenido.appendChild(iframe);
-
-        // Sincronizar el selector
-        selector.value = archivo;
-
-        // Desplazar suavemente al visor
-        document.querySelector('.visor').scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
-      // Evento del menú desplegable
-      selector.addEventListener('change', function () {
-        const archivo = this.value;
-        const opcion = this.options[this.selectedIndex];
-        const nombre = opcion.textContent.replace(/[^\w\sáéíóúÁÉÍÓÚñÑ]/g, '').trim();
-        cargarPresentacion(archivo, nombre);
-      });
-
-      // Evento de las tarjetas (evita la navegación normal y usa el iframe)
-      tarjetas.forEach(function (tarjeta) {
-        tarjeta.addEventListener('click', function (e) {
+      iconos.forEach(function (icono) {
+        icono.addEventListener('click', function (e) {
           e.preventDefault();
           const archivo = this.getAttribute('href');
           const nombre = this.getAttribute('data-alumno') || archivo;
-          cargarPresentacion(archivo, nombre);
+          cargarPresentacion(archivo, nombre, this);
         });
       });
     })();
